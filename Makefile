@@ -1,11 +1,4 @@
-SRC_DIR=source
-
-FOUNDRY_DIR = ../..
-PRODUCTION_DIR = ${FOUNDRY_DIR}/scripts
-DEVELOPMENT_DIR = ${FOUNDRY_DIR}/scripts_
-MODULARIZE = ${FOUNDRY_DIR}/build/modularize
-UGLIFY = uglifyjs --unsafe -nc
-UGLIFYCSS = uglifycss
+include ../../build/modules.mk
 
 all: premake body min
 
@@ -22,10 +15,12 @@ body:
 	cp -r images ${DEVELOPMENT_DIR}/ui/stars/images
 
 min:
-	${UGLIFY} ${DEVELOPMENT_DIR}/ui/stars.js > ${PRODUCTION_DIR}/ui/stars.js
+	${UGLIFYJS} ${DEVELOPMENT_DIR}/ui/stars.js > ${PRODUCTION_DIR}/ui/stars.js
 	${UGLIFYCSS} style/ui.stars.css > ${PRODUCTION_DIR}/ui/stars/style/ui.stars.css
 	cp -r images ${PRODUCTION_DIR}/ui/stars/images
 
 clean:
 	rm -fr ${DEVELOPMENT_DIR}/ui/stars
 	rm -fr ${PRODUCTION_DIR}/ui/stars
+	rm -fr ${DEVELOPMENT_DIR}/ui/stars.js
+	rm -fr ${PRODUCTION_DIR}/ui/stars.js
