@@ -1,26 +1,22 @@
+all: modularize-script minify-script convert-style lessify-style copy-assets
+
 include ../../build/modules.mk
 
-all: premake body min
+MODULE = ui/stars
+MODULARIZE_OPTIONS = -d "ui/core,ui/widget"
 
-premake:
-	mkdir -p ${DEVELOPMENT_DIR}/ui/stars/
-	mkdir -p ${DEVELOPMENT_DIR}/ui/stars/images/
-	mkdir -p ${DEVELOPMENT_DIR}/ui/stars/style/
-	mkdir -p ${PRODUCTION_DIR}/ui/stars
-	mkdir -p ${PRODUCTION_DIR}/ui/stars/images/
-	mkdir -p ${PRODUCTION_DIR}/ui/stars/style/
-body:
-	${MODULARIZE} -jq -n "ui/stars" -d "ui/core,ui/widget" -css "ui/stars/style/ui.stars" ui.stars.js > ${DEVELOPMENT_DIR}/ui/stars.js
-	cp style/ui.stars.css ${DEVELOPMENT_DIR}/ui/stars/style/ui.stars.css
-	cp -r images ${DEVELOPMENT_DIR}/ui/stars/
+SOURCE_SCRIPT_FOLDER = .
+SOURCE_SCRIPT_FILE_PREFIX = 
+SOURCE_SCRIPT_FILE_NAME = ui.stars
 
-min:
-	${UGLIFYJS} ${DEVELOPMENT_DIR}/ui/stars.js > ${PRODUCTION_DIR}/ui/stars.js
-	${UGLIFYCSS} style/ui.stars.css > ${PRODUCTION_DIR}/ui/stars/style/ui.stars.css
-	cp -r images ${PRODUCTION_DIR}/ui/stars/
+SOURCE_STYLE_FOLDER = style
+SOURCE_STYLE_FILE_PREFIX = 
+SOURCE_STYLE_FILE_NAME = ui.stars
 
-clean:
-	rm -fr ${DEVELOPMENT_DIR}/ui/stars
-	rm -fr ${PRODUCTION_DIR}/ui/stars
-	rm -fr ${DEVELOPMENT_DIR}/ui/stars.js
-	rm -fr ${PRODUCTION_DIR}/ui/stars.js
+TARGET_STYLE_FOLDER = ${FOUNDRY_STYLES_FOLDER}/ui
+TARGET_STYLE_FILE_NAME = stars
+TARGET_STYLE_CONVERTER = sed 's/url(..\/images/url(images/g'
+TARGET_STYLE_LESS_CONVERTER = sed 's/url(..\/images/url(@{foundry_uri}\/ui\/images/g'
+
+SOURCE_ASSET_FILES = images/*.*
+TARGET_ASSET_FOLDER_NAME = images
