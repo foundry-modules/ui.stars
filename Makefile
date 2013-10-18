@@ -3,7 +3,7 @@ all: modularize-script minify-script convert-style lessify-style copy-assets
 include ../../build/modules.mk
 
 MODULE = ui/stars
-MODULARIZE_OPTIONS = -d "ui/core,ui/widget"
+MODULARIZE_OPTIONS = -jq -d "ui/core,ui/widget"
 
 SOURCE_SCRIPT_FOLDER = .
 SOURCE_SCRIPT_FILE_PREFIX = 
